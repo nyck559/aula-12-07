@@ -3,27 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Lista de Alunos</title>
+  <title>Cadastro de Alunos - Escola Senai</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <main class="container" role="main" aria-label="Lista de alunos cadastrados">
-    <h1>Cadastro de Alunos</h1>
+  <div class="container" role="main" aria-label="Lista de alunos cadastrados">
+    <h1>Alunos Cadastrados</h1>
+
     <table aria-describedby="desc-tabela" role="table">
-      <caption id="desc-tabela">Tabela com lista de alunos cadastrados com nome, idade, email e telefone</caption>
+      <caption id="desc-tabela">Tabela listando alunos com nome, email e telefone</caption>
       <thead>
         <tr>
           <th scope="col">Nome</th>
-          <th scope="col">Idade</th>
           <th scope="col">Email</th>
           <th scope="col">Telefone</th>
         </tr>
       </thead>
       <tbody id="aluno-tbody">
-        <!-- Os dados dos alunos vão aparecer aqui -->
+        <!-- Dados dos alunos carregados dinamicamente -->
       </tbody>
     </table>
-  </main>
+
+    <p id="mensagem" role="status" aria-live="polite" class="mensagem"></p>
+  </div>
 
   <script src="script.js"></script>
 </body>
