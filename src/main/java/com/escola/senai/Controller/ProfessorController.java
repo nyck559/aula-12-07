@@ -1,64 +1,53 @@
-// package com.escola.senai.Controller;
+package com.escola.senai.Controller;
 
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.http.ResponseEntity;
-// import org.springframework.web.bind.annotation.*;
 
-// import com.escola.senai.Service.ProfessorService;
+import com.escola.senai.Model.Professor;
+import com.escola.senai.Service.ProfessorService;
+import org.springframework.web.bind.annotation.*;
 
-// import java.util.List;
-// import java.util.Optional;
+import java.util.List;
 
-// @RestController
-// @RequestMapping("/professores")
-// public class ProfessorController {
+@RestController
+@RequestMapping("/professor")
+public class ProfessorController {
+    private final ProfessorService services;
 
-//     private final ProfessorService professorService;
+    public ProfessorController(ProfessorService services) {
+        this.services = services;
+    }
 
-//     @Autowired
-//     public ProfessorController(ProfessorService professorService) {
-//         this.professorService = professorService;
-//     }
+    @GetMapping
+    public List<Professor> buscarAluno(){
+        return services.listarTodos();
+    }
 
-//     @GetMapping
-//     public List<Professor> listarProfessores() {
-//         return professorService.listarProfessores();
-//     }
+    @PostMapping
+    public Professor salvarNovoAluno(@RequestBody Professor aluno){
+        Professor professor;
+        return services.salvar(professor);
+    }
 
-//     @GetMapping("/{id}")
-//     public ResponseEntity<Professor> buscarPorId(@PathVariable Integer id) {
-//         Optional<Professor> professor = professorService.buscarPorId(id);
-//         return professor.map(ResponseEntity::ok)
-//                         .orElseGet(() -> ResponseEntity.notFound().build());
-//     }
+    @GetMapping("/{id}")
+    public Professor buscarProfessorId(@PathVariable Long id){
+        return services.buscarPorId(id);
+    }
 
-//     @PostMapping
-//     public ResponseEntity<?> criarProfessor(@RequestBody Professor professor) {
-//         try {
-//             Professor novoProfessor = professorService.adicionarProfessor(professor);
-//             return ResponseEntity.ok(novoProfessor);
-//         } catch (IllegalArgumentException e) {
-//             return ResponseEntity.badRequest().body(e.getMessage());
-//         }
-//     }
+    @DeleteMapping("/{id}")
+    public void deletarProfessor(@PathVariable Long id){
+        services.excluirProfessor(id);
+    }
 
-//     @PutMapping("/{id}")
-//     public ResponseEntity<?> atualizarProfessor(@PathVariable Integer id, @RequestBody Professor professor) {
-//         try {
-//             Professor atualizado = professorService.atualizarProfessor(id, professor);
-//             return ResponseEntity.ok(atualizado);
-//         } catch (IllegalArgumentException e) {
-//             return ResponseEntity.badRequest().body(e.getMessage());
-//         }
-//     }
 
-//     @DeleteMapping("/{id}")
-//     public ResponseEntity<?> removerProfessor(@PathVariable Integer id) {
-//         try {
-//             professorService.removerProfessor(id);
-//             return ResponseEntity.noContent().build();
-//         } catch (IllegalArgumentException e) {
-//             return ResponseEntity.notFound().build();
-//         }
-//     }
-// }
+    @PutMapping("/{id}")
+    public Professor atualizaProfessor(@PathVariable Long id, @RequestBody Professor ProfessorAtualizado){
+        Professor existeProfessor = services.buscarPorId(id);
+
+        if (existeProfessor == null) return null;
+        existeProfessor.setNome(ProfessorAtualizado.getNome());
+        existeProfessor.setEmail(ProfessorAtualizado.getEmail());
+        existeProfessor.setTelefone(ProfessorAtualizado.getTelefone());
+
+        return  services.salvar(existeProfessor);
+    }
+
+}
